@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example.c2c</groupId>
+    <artifactId>backend</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <cargo-maven2-plugin.version>1.4.17</cargo-maven2-plugin.version>
+        <cargo.jvmargs>-Xms256m -Xmx256m</cargo.jvmargs>
+        <cargo.servlet.port>8081</cargo.servlet.port>
+        <cargo.daemon.url>http://localhost:${cargo.servlet.port}</cargo.daemon.url>
+        <cargo.container.id>tomcat8x</cargo.container.id>
+        <cargo.container.url>
+            http://archive.apache.org/dist/tomcat/tomcat-8/v${cargo.tomcat8.version}/bin/apache-tomcat-${cargo.tomcat8.version}.zip
+        </cargo.container.url>
+        <cargo.tomcat8.version>8.0.36</cargo.tomcat8.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>am.ik.eureka</groupId>
+            <artifactId>simple-eureka-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-servlet</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.11</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>${cargo-maven2-plugin.version}</version>
+                <configuration>
+                    <configuration>
+                        <properties>
+                            <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
+                            <cargo.jvmargs>${cargo.jvmargs}</cargo.jvmargs>
+                            <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                        </properties>
+                    </configuration>
+                    <container>
+                        <containerId>${cargo.container.id}</containerId>
+                        <zipUrlInstaller>
+                            <url>${cargo.container.url}</url>
+                        </zipUrlInstaller>
+                    </container>
+                    <daemon>
+                        <properties>
+                            <cargo.daemon.url>${cargo.daemon.url}</cargo.daemon.url>
+                            <cargo.daemon.handleid>${project.artifactId}</cargo.daemon.handleid>
+                            <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                        </properties>
+                    </daemon>
+                    <deployables>
+                        <deployable>
+                            <location>${project.basedir}/target/${build.finalName}.war</location>
+                            <type>war</type>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

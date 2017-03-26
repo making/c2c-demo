@@ -1,0 +1,10 @@
+applications:
+- name: backend
+  buildpack: java_buildpack_offline
+  memery: 1g
+  path: target/backend-1.0-SNAPSHOT.war
+  env:
+    EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka.apps.g.ik.am/eureka
+#    EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 5
+#    EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 5
+#    EUREKA_CLIENT_INSTANCE_INFO_REPLICATION_INTERVAL_SECONDS: 5
