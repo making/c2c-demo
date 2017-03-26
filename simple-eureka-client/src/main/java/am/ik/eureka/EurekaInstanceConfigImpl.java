@@ -84,9 +84,4 @@ public class EurekaInstanceConfigImpl extends PropertiesInstanceConfig {
 	public boolean isInstanceEnabledOnit() {
 		return true;
 	}
-
-	public static void main(String[] args) {
-		EurekaInstanceConfigImpl config = new EurekaInstanceConfigImpl();
-		System.out.println(config.getInstanceId());
-	}
 }
