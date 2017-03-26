@@ -57,4 +57,5 @@
     </dependencies>
 
     <repositories></repositories>
+    <pluginRepositories></pluginRepositories>
 </project>
