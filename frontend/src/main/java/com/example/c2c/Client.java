@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
@@ -18,6 +20,7 @@ import com.netflix.discovery.DiscoveryClient;
 public class Client {
 	private final DiscoveryClient discoveryClient;
 	private AtomicInteger next = new AtomicInteger(0);
+	private final Set<String> blackList = new CopyOnWriteArraySet<>();
 
 	@Inject
 	public Client(DiscoveryClient discoveryClient) {
@@ -33,6 +36,12 @@ public class Client {
 			return "ERROR";
 		}
 		InstanceInfo instance = getInstance();
+
+		if (blackList.contains(instance.getInstanceId())) {
+			// Retry
+			return getResponse(limit - 1);
+		}
+
 		URL url = new URL(String.format("http://%s:%d", instance.getHostName(),
 				instance.getPort()));
 		try {
@@ -45,6 +54,7 @@ public class Client {
 			return readContent(conn);
 		}
 		catch (Exception e) {
+			blackList.add(instance.getInstanceId());
 			instance.setOverriddenStatus(InstanceInfo.InstanceStatus.DOWN);
 			// Retry
 			return getResponse(limit - 1);
