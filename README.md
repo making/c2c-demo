@@ -18,13 +18,6 @@ mvn clean package -DskipTests=true
 cf push
 ```
 
-### Install Eureka Client Library locally
-
-```
-cd simple-eureka-client
-mvn install -DskipTests=true
-```
-
 ### Deploy Backend
 
 Set eureka-server's url to `EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE` in `manifest.yml`
