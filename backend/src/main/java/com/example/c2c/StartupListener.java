@@ -20,7 +20,7 @@ import com.netflix.appinfo.ApplicationInfoManager;
 import am.ik.eureka.EurekaModule;
 
 @WebListener
-public class StartupListenerStartupListener extends GuiceServletContextListener {
+public class StartupListener extends GuiceServletContextListener {
 	Injector injector = Guice.createInjector(new EurekaModule(), new ServletModule() {
 		@Override
 		protected void configureServlets() {
